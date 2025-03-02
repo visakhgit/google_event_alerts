@@ -12,14 +12,13 @@ class Cron extends BaseCommand
 {
     protected $group       = 'cron';
     protected $name        = 'cron:checkEvents';
-    protected $description = 'Checks Google Calendar events and sends Twilio reminders.';
+    protected $description = 'Google Calendar events and sends Twilio reminders.';
 
     public function run(array $params)
     {
-        CLI::write('Starting cron job...', 'yellow');
+        CLI::write('Starting cron job.', 'yellow');
         $userModel = new UserModel();
 
-        //fetch all the authenticated users 
         $users =  $userModel->where('google_token !=', null)
                     ->where('phone!=',  null)
                     ->findAll();
@@ -31,7 +30,6 @@ class Cron extends BaseCommand
 
         foreach($users as $user){
             $googleAuth = new GoogleAuth();
-            // Decode the stored Google access token
             $token = json_decode($user['google_token'], true);
             // CLI::write("token: " . print_r($token,true), 'red');
             $googleAuth->setAccessToken($token);
@@ -39,6 +37,7 @@ class Cron extends BaseCommand
             $calendarService = $googleAuth->getCalendarService();
             $now = date('c');
             $future = date('c', strtotime('+5 minutes'));
+
             try{
                 $events = $calendarService->events->listEvents('primary', [
                     'timeMin' => $now,
@@ -50,11 +49,10 @@ class Cron extends BaseCommand
                 CLI::write("Error fetching events for user {$user['email']}: " . $e->getMessage(), 'red');
                 continue;
             }
-            // Initialize Twilio service
+
             $twilio = new TwilioService();
             $phoneNumber = $user['phone'];
 
-            // Loop through each event and send a reminder
             foreach ($events->getItems() as $event) {
                 $message = "Reminder: You have an event '{$event->getSummary()}' at {$event->getStart()->dateTime}";
                 try{
