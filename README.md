@@ -14,7 +14,7 @@ This CodeIgniter 4 application allows users to log in with Google, view their Go
 
 1. **Download/Clone the Project:**
 
-   Share the project via Google Drive. The recipient should download and extract the project files.
+     github link : https://github.com/visakhgit/google_event_alerts.git
 
 2. **Install Dependencies:**
    Open a terminal in the project root  
@@ -23,11 +23,8 @@ This CodeIgniter 4 application allows users to log in with Google, view their Go
    
 3 Environment Setup:
 
-	[]Rename envexample to .env and update it with your own database and Twilio credentials. Also,
-	rename credential.json to credentials.json and 
-
-	[]Replace the contents of credentials.json inside writable with your Google API credentials."
-
+	[]Rename envexample to .env and update it with own database and Twilio credentials. Also,
+	
 	database.default.hostname   = localhost
 	database.default.database   = your_database_name
 	database.default.username   = your_db_username
@@ -55,8 +52,10 @@ php spark migrate
 	[]Set the redirect URI to: http://your-domain/auth/callback
 	[]Download the credentials.json file and place it in the writable/ directory.
 
+	->Rename credential.json to credentials.json ,Replace the contents of credentials.json inside writable with downloaded Google API credentials.
+
     info : Library Setup: The project includes a library at app/Libraries/GoogleAuth.php
-    ( google/apiclient)
+    (google/apiclient)
 
     Twilio Setup
     []Twilio Account:Sign up for a Twilio account and obtain your Account SID, Auth Token, and a verified Twilio phone number.
@@ -66,7 +65,8 @@ php spark migrate
 8.Run the built-in server
 	php spark serve
 
-9. Add the phone number for twilio voice notification 
-
+9. Add the phone number in input field for twilio voice notification 
+   note :Please ensure that the input phone number is added to the verified caller IDs in Twilio, especially for trial accounts.
+   
 10.You can run the cron job manually with:
 	php spark cron:checkEvents
