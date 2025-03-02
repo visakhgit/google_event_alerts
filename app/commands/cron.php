@@ -62,6 +62,7 @@ class Cron extends BaseCommand
                     CLI::write("Error sending Twilio call to {$user['email']}: " . $e->getMessage(), 'red');
                 }
             }
+            
             CLI::write('Cron job completed!', 'green');
 
         }
